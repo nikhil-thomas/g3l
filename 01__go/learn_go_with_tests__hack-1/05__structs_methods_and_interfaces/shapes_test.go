@@ -1,0 +1,1 @@
+package _5__structs_methods_and_interfaces

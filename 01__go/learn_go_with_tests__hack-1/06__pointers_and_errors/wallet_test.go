@@ -1,0 +1,1 @@
+package _6__pointers_and_errors
