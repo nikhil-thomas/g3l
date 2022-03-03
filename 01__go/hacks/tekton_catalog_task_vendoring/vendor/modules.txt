@@ -1,0 +1,4 @@
+# github.com/tektoncd/catalog v0.0.0-20220228092314-4bf8b57aa105 => github.com/nikhil-thomas/catalog v0.0.0-20220303074210-2b511d687ff5
+## explicit; go 1.13
+github.com/tektoncd/catalog/task/tkn/0.1
+# github.com/tektoncd/catalog => github.com/nikhil-thomas/catalog v0.0.0-20220303074210-2b511d687ff5
