@@ -1,21 +1,52 @@
 package lgwt_reflection
 
 import (
-	"reflect"
+    "reflect"
 )
 
 func walk(x interface{}, f func(input string)) {
-	val := reflect.ValueOf(x)
-	//fmt.Printf("%#v", val)
-	for i := 0; i < val.NumField(); i++ {
-		field := val.Field(i)
-		if field.Kind() == reflect.String {
-			f(field.String())
-		}
-		if field.Kind() == reflect.Struct {
-			walk(field.Interface(), f)
-		}
-	}
+    val := getValue(x)
+    walkValue := func(value reflect.Value) {
+        walk(value.Interface(), f)
+    }
+    //numberOfValues := 0
+    //var getField func(int) reflect.Value
+    switch val.Kind() {
+    case reflect.String:
+        f(val.String())
+    case reflect.Struct:
+        for i := 0; i < val.NumField(); i++ {
+            walkValue(val.Field(i))
+        }
+    case reflect.Slice, reflect.Array:
+        for i := 0; i < val.Len(); i++ {
+            walkValue(val.Index(i))
+        }
+    case reflect.Map:
+        for _, key := range val.MapKeys() {
+            walkValue(val.MapIndex(key))
+        }
+    case reflect.Chan:
+        for v, ok := val.Recv(); ok; v, ok = val.Recv() {
+            walkValue(v)
+        }
+    case reflect.Func:
+        valFnResult := val.Call(nil)
+        for _, res := range valFnResult {
+            walkValue(res)
+        }
+    }
 }
 
-//What if the value of the struct passed in is a pointer?
+func getValue(x interface{}) reflect.Value {
+    val := reflect.ValueOf(x)
+    if val.Kind() == reflect.Ptr {
+        val = val.Elem()
+    }
+    return val
+}
+
+//case reflect.Map:
+//for _, key := range val.MapKeys() {
+//walk(val.MapIndex(key).Interface(), f)
+//}
