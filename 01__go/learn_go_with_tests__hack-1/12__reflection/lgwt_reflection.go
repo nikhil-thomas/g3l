@@ -45,8 +45,3 @@ func getValue(x interface{}) reflect.Value {
     }
     return val
 }
-
-//case reflect.Map:
-//for _, key := range val.MapKeys() {
-//walk(val.MapIndex(key).Interface(), f)
-//}

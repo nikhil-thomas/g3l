@@ -22,5 +22,11 @@ func main() {
     } else {
         panic(ErrNoFieldSetMatch)
     }
-
+    // f == v selector
+    sel = fields.OneTermEqualSelector("foo", "bar")
+    if sel.Matches(flds) {
+        fmt.Printf("Selector %v matched field set %v\n", sel, flds)
+    } else {
+        panic("Selector shouhave matched field set")
+    }
 }
